@@ -8,6 +8,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.3" />
+    <PackageReference Include="NSwag.AspNetCore" Version="14.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Clommercy.Core\Clommercy.Core.csproj" />
+    <ProjectReference Include="..\Clommercy.Persistence\Clommercy.Persistence.csproj" />
   </ItemGroup>
 
 </Project>
