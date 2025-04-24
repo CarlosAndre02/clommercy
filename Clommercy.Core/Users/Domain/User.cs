@@ -13,4 +13,6 @@ public sealed class User : BaseEntity
         Name = name;
         Password = password;
     }
+
+    public User() { }
 }

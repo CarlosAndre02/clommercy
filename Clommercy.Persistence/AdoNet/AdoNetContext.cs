@@ -36,6 +36,11 @@ public class AdoNetContext : IAdoNetContext
         return new SqlCommand(sql, _connection, _transaction);
     }
 
+    public SqlCommand CreateQueryCommand(string sql)
+    {
+        return new SqlCommand(sql, _connection);
+    }
+
     public void Dispose()
     {
         _connection.Dispose();

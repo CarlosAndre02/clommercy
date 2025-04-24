@@ -9,18 +9,31 @@ namespace Clommercy.Persistence.Repository;
 public class UserRepository : BaseRepository<User>, IUserRepository
 {
     private readonly IAdoNetContext _context;
-    public UserRepository(IAdoNetContext context) : base(context)
+    public UserRepository(IAdoNetContext context)
     {
         _context = context;
     }
 
-    public Task<User> Get(Guid id) {
-        // var user = new User(email: "dsadasd", name: "dsadasd", password: "dsadasd");
-        // return Task.FromResult<User>(user);
-        throw new NotImplementedException();
+    public User Get(int id)
+    {
+        using (SqlCommand command = _context.CreateQueryCommand("SELECT * FROM Users WHERE Id = @Id"))
+        {
+            command.Parameters.AddWithValue("@Id", id);
+
+            using (SqlDataReader reader = command.ExecuteReader())
+            {
+                User? user = null;
+                while (reader.Read())
+                {
+                    user = Map(reader);
+                }
+                return user is not null ? user : throw new Exception("User not found");
+            }
+        }
     }
 
-    public Task<List<User>> GetAll() {
+    public Task<List<User>> GetAll()
+    {
         throw new NotImplementedException();
         // return Task.FromResult<List<User>>(new List<User>());
     }
@@ -57,12 +70,13 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         }
     }
 
-    public Task<User> GetByEmail(string email) {
+    public Task<User> GetByEmail(string email)
+    {
         // var user = new User(email: "dsadasd", name: "dsadasd", password: "dsadasd");
         // return Task.FromResult<User>(user);
         throw new NotImplementedException();
     }
-    
+
     public IEnumerable<User> FindUsers(string Name)
     {
         using (var command = _context.CreateCommand("dasdsa"))
@@ -71,8 +85,8 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             command.Parameters.AddWithValue("@Name", Name);
             return ToList(command);
         }
-    }    
-    
+    }
+
     public IEnumerable<User> FindBlocked()
     {
         using (var command = _context.CreateCommand("dasdsa"))
