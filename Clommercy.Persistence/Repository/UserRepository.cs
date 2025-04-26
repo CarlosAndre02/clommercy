@@ -35,7 +35,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     public Task<List<User>> GetAll()
     {
         throw new NotImplementedException();
-        // return Task.FromResult<List<User>>(new List<User>());
     }
 
     public int Create(User user)
@@ -52,10 +51,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     public void Update(User user)
     {
-        using (var command = _context.CreateCommand("dasdsa"))
+        using (SqlCommand command = _context.CreateCommand("UPDATE Users SET Email = @Email, Name = @Name WHERE Id = @userId;"))
         {
-            command.CommandText = @"UPDATE Users SET CompanyId = @companyId WHERE Id = @userId";
+            command.Parameters.AddWithValue("@userId", user.Id);
             command.Parameters.AddWithValue("@Email", user.Email);
+            command.Parameters.AddWithValue("@Name", user.Name);
             command.ExecuteNonQuery();
         }
     }
@@ -72,27 +72,17 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     public Task<User> GetByEmail(string email)
     {
-        // var user = new User(email: "dsadasd", name: "dsadasd", password: "dsadasd");
-        // return Task.FromResult<User>(user);
         throw new NotImplementedException();
     }
 
     public IEnumerable<User> FindUsers(string Name)
     {
-        using (var command = _context.CreateCommand("dasdsa"))
-        {
-            command.CommandText = @"SELECT * FROM Users WHERE CompanyId = @companyId AND FirstName LIKE @firstName";
-            command.Parameters.AddWithValue("@Name", Name);
-            return ToList(command);
-        }
-    }
-
-    public IEnumerable<User> FindBlocked()
-    {
-        using (var command = _context.CreateCommand("dasdsa"))
-        {
-            command.CommandText = @"SELECT * FROM Users WHERE Status = -1";
-            return ToList(command);
-        }
+        // using (var command = _context.CreateCommand("dasdsa"))
+        // {
+        //     command.CommandText = @"SELECT * FROM Users WHERE CompanyId = @companyId AND FirstName LIKE @firstName";
+        //     command.Parameters.AddWithValue("@Name", Name);
+        //     return ToList(command);
+        // }
+        throw new NotImplementedException();
     }
 }

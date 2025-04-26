@@ -1,12 +1,10 @@
-using System.Threading.Tasks;
-
 using AutoMapper;
+using MediatR;
 
-using Clommercy.Core.Users.Domain;
 using Clommercy.Core.Users.UseCases.CreateUser;
 using Clommercy.Core.Users.UseCases.GetUser;
+using Clommercy.Core.Users.UseCases.UpdateUser;
 
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Clommercy.WebApi.Controllers
@@ -24,7 +22,8 @@ namespace Clommercy.WebApi.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id) {
+        public async Task<IActionResult> GetUser(int id)
+        {
             var getUserRequest = new GetUserRequest(id);
             var user = await _mediator.Send(getUserRequest);
             return Ok(user);
@@ -32,14 +31,24 @@ namespace Clommercy.WebApi.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Create(CreateUserRequest request)
-        {   
-            CreateUserResponse user = await _mediator.Send(request);
-            
+        {
+            var user = await _mediator.Send(request);
+
             return CreatedAtAction(
                 nameof(GetUser),
                 new { id = user.Id },
                 _mapper.Map<CreateUserResponse>(user)
             );
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<UpdateUserResponse>> Update(int id, UpdateUserRequest request, CancellationToken cancellationToken)
+        {
+            if (id != request.Id)
+                return BadRequest();
+
+            var response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
         }
     }
 }

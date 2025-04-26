@@ -24,6 +24,7 @@ public class CreateUserHandler : IRequestHandler<CreateUserRequest, CreateUserRe
     {
         var user = _mapper.Map<User>(request);
 
+        _unitOfWork.StartTransaction();
         int userId = _userRepository.Create(user);
 
         _unitOfWork.Commit();
