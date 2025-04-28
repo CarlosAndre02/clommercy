@@ -3,7 +3,6 @@ using MediatR;
 
 using Clommercy.Core.Shared.Contracts;
 using Clommercy.Core.Users.Repository;
-using Clommercy.Core.Users.Domain;
 
 
 namespace Clommercy.Core.Users.UseCases.UpdateUser;

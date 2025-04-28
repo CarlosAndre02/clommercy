@@ -6,6 +6,7 @@ using Clommercy.Core.Users.UseCases.GetUser;
 using Clommercy.Core.Users.UseCases.UpdateUser;
 
 using Microsoft.AspNetCore.Mvc;
+using Clommercy.Core.Users.UseCases.DeleteUser;
 
 namespace Clommercy.WebApi.Controllers
 {
@@ -48,6 +49,18 @@ namespace Clommercy.WebApi.Controllers
                 return BadRequest();
 
             var response = await _mediator.Send(request, cancellationToken);
+            return Ok(response);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<DeleteUserResponse>> Delete(int? id)
+        {
+            if (id is null)
+                return BadRequest();
+
+            var deleteUserRequest = new DeleteUserRequest(id.Value);
+
+            var response = await _mediator.Send(deleteUserRequest);
             return Ok(response);
         }
     }

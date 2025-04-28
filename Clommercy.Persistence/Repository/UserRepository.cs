@@ -60,12 +60,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         }
     }
 
-    public void Delete(User user)
+    public void Delete(int Id)
     {
-        using (var command = _context.CreateCommand("dasdsa"))
+        using (var command = _context.CreateCommand("DELETE FROM Users WHERE Id = @userId"))
         {
-            command.CommandText = @"DELETE FROM Users WHERE Id = @userId";
-            command.Parameters.AddWithValue("userId", user.Id);
+            command.Parameters.AddWithValue("userId", Id);
             command.ExecuteNonQuery();
         }
     }
